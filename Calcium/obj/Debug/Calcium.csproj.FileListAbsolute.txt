@@ -1,0 +1,15 @@
+C:\Users\berkw\Projects\Calcium\Calcium\bin\Debug\Calcium.exe.config
+C:\Users\berkw\Projects\Calcium\Calcium\bin\Debug\Calcium.exe
+C:\Users\berkw\Projects\Calcium\Calcium\bin\Debug\Calcium.pdb
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium.csprojAssemblyReference.cache
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\MainWindow.g.cs
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\App.g.cs
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium_MarkupCompile.cache
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium_MarkupCompile.lref
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\MainWindow.baml
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium.g.resources
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium.Properties.Resources.resources
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium.csproj.GenerateResource.cache
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium.csproj.CoreCompileInputs.cache
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium.exe
+C:\Users\berkw\Projects\Calcium\Calcium\obj\Debug\Calcium.pdb
