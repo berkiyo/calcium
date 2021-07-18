@@ -1,2 +1,4 @@
 # calcium
-A responsive calculator app.
+A responsive calculator app for iOS + iPadOS.
+
+![Main](https://)
