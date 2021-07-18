@@ -10,42 +10,75 @@ import SwiftUI
 /**
  Defining the calculator buttons
  */
-enum CalcButton {
-    case one
-    case two
-    case three
-    case four
-    case five
-    case six
-    case seven
-    case eight
-    case nine
-    case zero
-    case add
-    case subtract
-    case multiply
-    case divide
-    case equal
-    case decimal
-    case percent
-    case negative
+enum CalcButton: String {
+    case one = "1"
+    case two = "2"
+    case three = "3"
+    case four = "4"
+    case five = "5"
+    case six = "6"
+    case seven = "7"
+    case eight = "8"
+    case nine = "9"
+    case zero = "0"
+    case add = "+"
+    case subtract = "-"
+    case multiply = "x"
+    case divide = "/"
+    case equal = "="
+    case clear = "AC"
+    case decimal = "."
+    case percent = "%"
+    case negative = "-/+"
 }
 
 struct ContentView: View {
     
-    let buttons: [[CalcButton]] = []
+    /**
+     Defining the buttons and positioning
+     */
+    let buttons: [[CalcButton]] = [
+        [.clear, .negative, .percent],
+        [.seven, .eight, .nine],
+        [.four, .five, .six],
+        [.one, .two, .three],
+    ]
+    
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
             
             VStack {
-                // Display text
+                /**
+                The result - text display
+                 */
                 HStack {
                     Spacer()
                     Text("0").bold().font(.system(size: 64)).foregroundColor(.white)
                 }
                 .padding()
-                // Calculator buttons
+                
+                
+                /**
+                 The buttons on the calculator
+                 */
+                ForEach(buttons, id: \.self) { row in
+                    // Put them in a horizontal stack
+                    HStack {
+                        ForEach(row, id: \.self) { item in
+                            Button(action: {
+                                
+                            }, label: {
+                                Text(item.rawValue)
+                                    .font(.system(size: 32))
+                                    .frame(width: 70, height: 70)
+                                    .background(Color.orange)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(35)
+                            })
+                        }
+                    }
+                }
             }
         }
     }
