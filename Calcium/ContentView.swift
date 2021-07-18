@@ -28,14 +28,17 @@ enum CalcButton: String {
     case percent = "%"
     case negative = "-/+"
 
+    /**
+        Button colour definitions
+     */
     var buttonColor: Color {
         switch self {
         case .add, .subtract, .multiply, .divide, .equal:
-            return .orange
+            return .blue
         case .clear, .negative, .percent:
-            return Color(.lightGray)
+            return Color(.gray)
         default:
-            return Color(UIColor(red: 55/255.0, green: 55/255.0, blue: 55/255.0, alpha: 1))
+            return Color(UIColor(red: 35/255.0, green: 35/255.0, blue: 35/255.0, alpha: 1))
         }
     }
 }
@@ -60,7 +63,7 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
+            Color.black.edgesIgnoringSafeArea(.all) // define the colour for the background
 
             VStack {
                 Spacer()
@@ -71,7 +74,7 @@ struct ContentView: View {
                     Text(value)
                         .bold()
                         .font(.system(size: 100))
-                        .foregroundColor(.white)
+                        .foregroundColor(.white) // foreground text colour (e.g. ans)
                 }
                 .padding()
 
@@ -100,25 +103,34 @@ struct ContentView: View {
         }
     }
 
+    /**
+     Tapping functions
+     */
     func didTap(button: CalcButton) {
         switch button {
+        
+        // OPERATIONS
         case .add, .subtract, .multiply, .divide, .equal:
             if button == .add {
                 self.currentOperation = .add
                 self.runningNumber = Int(self.value) ?? 0
             }
+            
             else if button == .subtract {
                 self.currentOperation = .subtract
                 self.runningNumber = Int(self.value) ?? 0
             }
+            
             else if button == .multiply {
                 self.currentOperation = .multiply
                 self.runningNumber = Int(self.value) ?? 0
             }
+            
             else if button == .divide {
                 self.currentOperation = .divide
                 self.runningNumber = Int(self.value) ?? 0
             }
+            
             else if button == .equal {
                 let runningValue = self.runningNumber
                 let currentValue = Int(self.value) ?? 0
@@ -135,10 +147,15 @@ struct ContentView: View {
             if button != .equal {
                 self.value = "0"
             }
+            
+        // CLEAR
         case .clear:
             self.value = "0"
+        
+        // DECIMAL, NEGATIVE, PERCENT (currently not working)
         case .decimal, .negative, .percent:
             break
+        
         default:
             let number = button.rawValue
             if self.value == "0" {
