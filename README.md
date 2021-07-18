@@ -1,2 +1,2 @@
 # calcium
-Yet another calculator... just for fun!
+A responsive calculator app.
