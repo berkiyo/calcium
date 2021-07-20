@@ -44,12 +44,13 @@ enum CalcButton: String {
 }
 
 enum Operation {
-    case add, subtract, multiply, divide, none
+    case add, subtract, multiply, divide, decimal, negative, percentage, none
 }
 
 struct ContentView: View {
 
     @State var value = "0"
+    @State var method = "Calcium"
     @State var runningNumber = 0
     @State var currentOperation: Operation = .none
 
@@ -69,15 +70,31 @@ struct ContentView: View {
                 Spacer()
 
                 // Text display
-                HStack {
+                VStack(alignment: .leading) {
+                    HStack {
+                        // Working out
+                        Spacer()
+                        Text(method)
+                            .bold()
+                            .font(.system(size: 60))
+                            .foregroundColor(.gray) // foreground text colour (e.g. ans)
+                            .padding()
+                        
+                    }
                     Spacer()
-                    Text(value)
-                        .bold()
-                        .font(.system(size: 100))
-                        .foregroundColor(.white) // foreground text colour (e.g. ans)
+                    HStack {
+                        // Answer
+                        Spacer()
+                        Text(value)
+                            .bold()
+                            .font(.system(size: 60))
+                            .foregroundColor(.white) // foreground text colour (e.g. ans)
+                            .padding()
+                    }
+                    
+                
                 }
-                .padding()
-
+                
                 // Our buttons
                 ForEach(buttons, id: \.self) { row in
                     HStack(spacing: 12) {
@@ -107,41 +124,78 @@ struct ContentView: View {
      Tapping functions
      */
     func didTap(button: CalcButton) {
+        // Just defining some things outside of the scope
+        var decimalValue = 0.0
+        
+        /**
+         TODO: Need to fix up the runningValue and other functions (e.g. decimals, negative, percentage)
+         */
+        
         switch button {
         
         // OPERATIONS
         case .add, .subtract, .multiply, .divide, .equal:
+            checkIfDefault()
             if button == .add {
                 self.currentOperation = .add
-                self.runningNumber = Int(self.value) ?? 0
+                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.method = method+"+"+value
+
             }
             
             else if button == .subtract {
                 self.currentOperation = .subtract
-                self.runningNumber = Int(self.value) ?? 0
+                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.method = method+"-"+value
+
+
             }
             
             else if button == .multiply {
                 self.currentOperation = .multiply
-                self.runningNumber = Int(self.value) ?? 0
+                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.method = method+"x"+value
+
+
             }
             
             else if button == .divide {
                 self.currentOperation = .divide
-                self.runningNumber = Int(self.value) ?? 0
+                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.method = method+"/"+value
+
+
             }
             
             else if button == .equal {
                 let runningValue = self.runningNumber
-                let currentValue = Int(self.value) ?? 0
+                let currentValue = Int(Double(self.value) ?? 0.0)
+
+                
                 switch self.currentOperation {
-                case .add: self.value = "\(runningValue + currentValue)"
-                case .subtract: self.value = "\(runningValue - currentValue)"
-                case .multiply: self.value = "\(runningValue * currentValue)"
-                case .divide: self.value = "\(runningValue / currentValue)"
-                case .none:
-                    break
+                    case .add:
+                        self.value = "\(runningValue + currentValue)"
+
+                    case .subtract:
+                        self.value = "\(runningValue - currentValue)"
+
+                    case .multiply:
+                        self.value = "\(runningValue * currentValue)"
+
+                    case .divide:
+                        self.value = "\(runningValue / currentValue)"
+                    case .decimal:
+                        self.value = "\(runningValue + currentValue)"
+                    case .negative:
+                        break
+                    case .percentage:
+                        break
+                    case .none:
+                        break
                 }
+                
+                self.method = method+"="+value
+
             }
 
             if button != .equal {
@@ -151,11 +205,8 @@ struct ContentView: View {
         // CLEAR
         case .clear:
             self.value = "0"
-        
-        // DECIMAL, NEGATIVE, PERCENT (currently not working)
-        case .decimal, .negative, .percent:
-            break
-        
+            self.method = "Cleared"
+            
         default:
             let number = button.rawValue
             if self.value == "0" {
@@ -176,6 +227,15 @@ struct ContentView: View {
 
     func buttonHeight() -> CGFloat {
         return (UIScreen.main.bounds.width - (5*12)) / 4
+    }
+    
+    func checkIfDefault() {
+        if method == "Calcium" {
+            method = ""
+        }
+        if method == "Cleared" {
+            method = ""
+        }
     }
 }
 
