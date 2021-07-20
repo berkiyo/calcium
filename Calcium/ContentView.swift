@@ -1,9 +1,6 @@
-//
-//  ContentView.swift
-//  Calculator
-//
-//  Created by Afraz Siddiqui on 3/5/21.
-//
+/**
+ ContentView - Created by Berk Dogan
+ */
 
 import SwiftUI
 
