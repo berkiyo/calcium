@@ -44,12 +44,16 @@ enum Operation {
     case add, subtract, multiply, divide, decimal, negative, percentage, none
 }
 
+
 struct ContentView: View {
 
     @State var value = "0"
     @State var method = "Calcium"
     @State var runningNumber = 0
     @State var currentOperation: Operation = .none
+    
+    // Share button
+    @State private var isSharingSheetShowing = false
 
     let buttons: [[CalcButton]] = [
         [.clear, .negative, .percent, .divide],
@@ -60,61 +64,88 @@ struct ContentView: View {
     ]
 
     var body: some View {
-        ZStack {
-            Color.black.edgesIgnoringSafeArea(.all) // define the colour for the background
+        
+        // Let's do the navigation bar
+        NavigationView {
+            
+            ZStack {
+                Color.black.edgesIgnoringSafeArea(.all) // define the colour for the background
 
-            VStack {
-                Spacer()
-
-                // Text display
-                VStack(alignment: .leading) {
-                    HStack {
-                        // Working out
-                        Spacer()
-                        Text(method)
-                            .bold()
-                            .font(.system(size: 60))
-                            .foregroundColor(.gray) // foreground text colour (e.g. ans)
-                            .padding()
-                        
-                    }
+                VStack {
                     Spacer()
-                    HStack {
-                        // Answer
+
+                    // Text display
+                    VStack(alignment: .leading) {
+                        HStack {
+                            // Working out
+                            Spacer()
+                            Text(method)
+                                .bold()
+                                .font(.system(size: 30))
+                                .foregroundColor(.gray) // foreground text colour (e.g. ans)
+                                .padding()
+                            
+                        }
                         Spacer()
-                        Text(value)
-                            .bold()
-                            .font(.system(size: 60))
-                            .foregroundColor(.white) // foreground text colour (e.g. ans)
-                            .padding()
+                        HStack {
+                            // Answer
+                            Spacer()
+                            Text(value)
+                                .bold()
+                                .font(.system(size: 54))
+                                .foregroundColor(.white) // foreground text colour (e.g. ans)
+                                .padding()
+                        }
+                        // More navigation bar stuff
+                        .navigationTitle("Calcium")
+                        .toolbar {
+                            ToolbarItemGroup(placement: .navigationBarTrailing){
+                                Button {
+                                    print("Share tapped")
+                                    shareButton()
+                                } label: {
+                                    Label("Share", systemImage: "square.and.arrow.up")
+                                }
+                                
+                                Button {
+                                    print("Settings tapped")
+                                } label: {
+                                    Label("Settings", systemImage: "gear")
+                                }
+                                
+                            }
+                            
+                        }
+                    
                     }
                     
-                
-                }
-                
-                // Our buttons
-                ForEach(buttons, id: \.self) { row in
-                    HStack(spacing: 12) {
-                        ForEach(row, id: \.self) { item in
-                            Button(action: {
-                                self.didTap(button: item)
-                            }, label: {
-                                Text(item.rawValue)
-                                    .font(.system(size: 32))
-                                    .frame(
-                                        width: self.buttonWidth(item: item),
-                                        height: self.buttonHeight()
-                                    )
-                                    .background(item.buttonColor)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(self.buttonWidth(item: item)/2)
-                            })
+                    // Our buttons
+                    ForEach(buttons, id: \.self) { row in
+                        HStack(spacing: 12) {
+                            ForEach(row, id: \.self) { item in
+                                Button(action: {
+                                    self.didTap(button: item)
+                                }, label: {
+                                    Text(item.rawValue)
+                                        .font(.system(size: 32))
+                                        .frame(
+                                            width: self.buttonWidth(item: item),
+                                            height: self.buttonHeight()
+                                        )
+                                        .background(item.buttonColor)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(self.buttonWidth(item: item)/2)
+                                })
+                            }
                         }
+                        .padding(.bottom, 3)
                     }
-                    .padding(.bottom, 3)
                 }
             }
         }
+        // Navigation View
+        .accentColor(.white)
+        
     }
 
     /**
@@ -171,8 +202,8 @@ struct ContentView: View {
                 
                 switch self.currentOperation {
                     case .add:
+                        self.method = method+"+"+value
                         self.value = "\(runningValue + currentValue)"
-
                     case .subtract:
                         self.value = "\(runningValue - currentValue)"
 
@@ -191,7 +222,7 @@ struct ContentView: View {
                         break
                 }
                 
-                self.method = method+"="+value
+                
 
             }
 
@@ -234,6 +265,17 @@ struct ContentView: View {
             method = ""
         }
     }
+    
+    func shareButton() {
+        isSharingSheetShowing.toggle()
+        let url = URL(string: "https://apple.com")
+        let activityView = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
+        
+        UIApplication.shared.windows.first?.rootViewController?.present(activityView, animated: true, completion: nil)
+    }
+    
+    
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
