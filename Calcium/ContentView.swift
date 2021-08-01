@@ -41,7 +41,7 @@ enum CalcButton: String {
 }
 
 enum Operation {
-    case add, subtract, multiply, divide, decimal, negative, percentage, none
+    case add, subtract, multiply, divide, decimal, negative, percent, none
 }
 
 
@@ -49,7 +49,7 @@ struct ContentView: View {
 
     @State var value = "0"
     @State var method = "Calcium"
-    @State var runningNumber = 0
+	@State var runningNumber = 0.0
     @State var currentOperation: Operation = .none
     
     // Share button
@@ -109,6 +109,7 @@ struct ContentView: View {
                                 
                                 Button {
                                     print("Settings tapped")
+									settingsButton()
                                 } label: {
                                     Label("Settings", systemImage: "gear")
                                 }
@@ -162,18 +163,18 @@ struct ContentView: View {
         switch button {
         
         // OPERATIONS
-        case .add, .subtract, .multiply, .divide, .equal:
+		case .add, .subtract, .multiply, .divide, .percent, .negative, .equal:
             checkIfDefault()
             if button == .add {
                 self.currentOperation = .add
-                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.runningNumber = Double(self.value) ?? 0.0
                 self.method = method+"+"+value
 
             }
             
             else if button == .subtract {
                 self.currentOperation = .subtract
-                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.runningNumber = Double(self.value) ?? 0.0
                 self.method = method+"-"+value
 
 
@@ -181,7 +182,7 @@ struct ContentView: View {
             
             else if button == .multiply {
                 self.currentOperation = .multiply
-                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.runningNumber = Double(self.value) ?? 0.0
                 self.method = method+"x"+value
 
 
@@ -189,22 +190,31 @@ struct ContentView: View {
             
             else if button == .divide {
                 self.currentOperation = .divide
-                self.runningNumber = Int(Double(self.value) ?? 0.0)
+                self.runningNumber = Double(self.value) ?? 0.0
                 self.method = method+"/"+value
 
 
             }
+			else if button == .percent {
+				self.currentOperation = .percent
+				self.runningNumber = Double(self.value) ?? 0.0
+				self.method = method+"%"+value
+
+
+			}
             
             else if button == .equal {
                 let runningValue = self.runningNumber
-                let currentValue = Int(Double(self.value) ?? 0.0)
+                let currentValue = Double(self.value) ?? 0.0
 
                 
                 switch self.currentOperation {
-                    case .add:
-                        self.method = method+"+"+value
+                    
+					case .add:
+                        // will come back to this one --> self.method = method+"+"+value
                         self.value = "\(runningValue + currentValue)"
-                    case .subtract:
+                    
+					case .subtract:
                         self.value = "\(runningValue - currentValue)"
 
                     case .multiply:
@@ -212,13 +222,18 @@ struct ContentView: View {
 
                     case .divide:
                         self.value = "\(runningValue / currentValue)"
-                    case .decimal:
-                        self.value = "\(runningValue + currentValue)"
-                    case .negative:
-                        break
-                    case .percentage:
-                        break
-                    case .none:
+                    
+					case .decimal:
+						// calculate and see if there are more than one decimal places
+						self.value = "\(runningValue + currentValue)"
+					
+					case .percent:
+						self.value = "\(runningValue * 0.01 + currentValue)"
+					
+					case .negative:
+						self.value = "\(runningValue * (-1))"
+						break
+					case .none:
                         break
                 }
                 
@@ -266,13 +281,23 @@ struct ContentView: View {
         }
     }
     
+	/**
+	The share button, currently just copies the answer and allows you to share it
+	*/
     func shareButton() {
         isSharingSheetShowing.toggle()
-        let url = URL(string: "https://apple.com")
-        let activityView = UIActivityViewController(activityItems: [url!], applicationActivities: nil)
+		let finalValue = value // obtain the value from the calculator, we just want to use it to share things
+		let activityView = UIActivityViewController(activityItems: [finalValue], applicationActivities: nil)
         
         UIApplication.shared.windows.first?.rootViewController?.present(activityView, animated: true, completion: nil)
     }
+	
+	/**
+	Options button
+	*/
+	func settingsButton() {
+		
+	}
     
     
     
